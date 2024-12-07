@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Cliente, Carro
 import re
+from django.core import serializers
+import json
 
 def clientes(request):
     ''' 
@@ -17,7 +19,8 @@ def clientes(request):
     - Retorna HttpResponse quando todos os campos validos.
     '''
     if request.method == 'GET':
-        return render(request, 'clientes.html')
+        clientes_List = Cliente.objects.all()
+        return render(request, 'clientes.html', {'clientes': clientes_List})
     
     elif request.method == 'POST':
         # Metodo POST, pega(.get) e get('Valor do atributo "name" html')
@@ -53,3 +56,33 @@ def clientes(request):
             car.save()
             
         return HttpResponse('Teste')
+    
+
+def att_cliente(request):
+    '''
+    - id_cliente: Recebe um metodo post.
+
+    - cliente: Pega todos os objetos do model de "Cliente", e filtra os clientes com base no id do cliente.
+
+    - cliente_json: Recebe os dados de um objeto Django e converte para dicionario em python.
+
+    Funções:
+        - json.loads: 
+            - Converte a string Json gerada pela serialização em objeto Python.
+
+        - serializers.serialize:
+            - Parametros: 
+            1º: formatado da saída como Json.
+            2º: Queryset contendo um objeto do modelo Cliente.
+
+        
+    - [0] - Acessa o primeiro elemento da lista.
+    - ['fields'] - Acessa a chave fields do dicionario que contém os dados do objeto do modelo.
+    '''
+
+    # print('teste')
+    id_cliente = request.POST.get('id_cliente')
+    cliente = Cliente.objects.filter(id=id_cliente)
+    cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields']
+    print(cliente_json)
+    return JsonResponse(cliente_json)
