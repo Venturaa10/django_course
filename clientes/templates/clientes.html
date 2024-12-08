@@ -19,11 +19,10 @@
         </div>
 
             <div id="adicionar-cliente" class="adicionar-cliente">
-                                     
-                <!-- Atributo value="{{variavel_django}}" -->
-                    
                 <form action="{% url 'clientes' %}" method="POST">{% csrf_token %}
                     <div class="row">
+                <!-- Atributo value="{{variavel_django}}" -->
+
                         <div class="col-md">
                             <p>Nome:</p>
                             <input type="text" class="form-control" placeholder="Primeiro nome" name="nome" value="{{nome}}">
@@ -77,6 +76,7 @@
                 <p></p>
                 <select id="cliente-select"  onchange="dados_cliente()" class="form-control">
                     {% for cliente in clientes %}
+                    <!-- Percorre a lista contendo todos os clientes do models de Cliente. -->
                     <option value="{{cliente.id}}">{{cliente.nome}}</option>
                     {% endfor %}
                 </select>
@@ -84,17 +84,21 @@
                 <hr>
 
                 <div id="form-att-cliente">
-                <p>Nome: </p>
-                <input id="nome" class="form-control" type="text">
-                <p>Sobrenome:</p>
-                <input id="sobrenome" class="form-control" type="text">
-                <p>E-mail: </p>
-                <input id="email" class="form-control" type="text">
-                <p>CPF: </p>
-                <input id="cpf" class="form-control" type="text">
+                    <!-- As informações do cliente são preenchidas automaticamente de acordo com o seu id, quando a função "dados_cliente()" é chamada. -->
+                    <p>Nome:</p>
+                    <input id="nome" type="text" class='form-control'>
+                    <p>Sobrenome:</p>
+                    <input id="sobrenome" type="text" class='form-control'>
+                    <p>E-mail:</p>
+                    <input id="email" type="text" class='form-control'>
+                    <p>CPF:</p>
+                    <input id="cpf" type="text" class='form-control'>
                 </div>
             </div>
 
     </div>
     <script src="{% static 'clientes/js/clientes.js' %}"></script>
 {% endblock%}
+
+
+                    
